@@ -1,52 +1,120 @@
 {% extends "layouts/base.html" %}
+{% load static %}
+{% load tailwind_filters %}
+
 {% block content %}
-<h2>Mis Solicitudes</h2>
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-3xl font-bold text-gray-800 mb-8">Mis Solicitudes</h2>
 
-<h3>Solicitudes Enviadas</h3>
-<table>
-    <tr>
-        <th>Artículo</th>
-        <th>Receptor</th>
-        <th>Estado</th>
-        <th>Fecha</th>
-    </tr>
-    {% for s in enviadas %}
-    <tr>
-        <td>{{ s.articulo.nombre_articulo }}</td>
-        <td>{{ s.receptor.username }}</td>
-        <td>{{ s.estado.nombre }}</td>
-        <td>{{ s.fecha }}</td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="4">No has enviado solicitudes.</td></tr>
-    {% endfor %}
-</table>
+    <!-- Solicitudes Enviadas -->
+    <div class="mb-12">
+        <h3 class="text-2xl font-semibold text-gray-700 mb-4 pb-2 border-b border-gray-200">Solicitudes Enviadas</h3>
+        {% if enviadas %}
+            <div class="overflow-x-auto bg-white rounded-lg shadow">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Imagen</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Artículo</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Receptor</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for s in enviadas %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex-shrink-0 h-20 w-20">
+                                    <img class="h-20 w-20 object-cover rounded-md" src="{{ s.articulo.ruta_foto.url }}" alt="{{ s.articulo.nombre_articulo }}">
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">{{ s.articulo.nombre_articulo }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-500">{{ s.receptor.username }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                    {% if s.estado.nombre == 'Aceptado' %}bg-green-100 text-green-800
+                                    {% elif s.estado.nombre == 'Rechazado' %}bg-red-100 text-red-800
+                                    {% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                                    {{ s.estado.nombre }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ s.fecha|date:"d M Y" }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="bg-white p-6 rounded-lg shadow">
+                <p class="text-gray-600">No has enviado solicitudes.</p>
+            </div>
+        {% endif %}
+    </div>
 
-<h3>Solicitudes Recibidas</h3>
-<table>
-    <tr>
-        <th>Artículo</th>
-        <th>Ofertante</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-    </tr>
-    {% for r in recibidas %}
-    <tr>
-        <td>{{ r.articulo.nombre_articulo }}</td>
-        <td>{{ r.ofertante.username }}</td>
-        <td>{{ r.estado.nombre }}</td>
-        <td>
-            {% if r.estado.nombre == "Pendiente" %}
-                <a href="{% url 'cambiar_estado_intercambio' r.id 'Aceptado' %}">Aceptar</a>
-                <a href="{% url 'cambiar_estado_intercambio' r.id 'Rechazado' %}">Rechazar</a>
-            {% else %}
-                -
-            {% endif %}
-        </td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="4">No tienes solicitudes recibidas.</td></tr>
-    {% endfor %}
-</table>
-
+    <!-- Solicitudes Recibidas -->
+    <div class="mb-12">
+        <h3 class="text-2xl font-semibold text-gray-700 mb-4 pb-2 border-b border-gray-200">Solicitudes Recibidas</h3>
+        {% if recibidas %}
+            <div class="overflow-x-auto bg-white rounded-lg shadow">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Imagen</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Artículo</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ofertante</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for r in recibidas %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex-shrink-0 h-20 w-20">
+                                    <img class="h-20 w-20 object-cover rounded-md" src="{{ r.articulo.ruta_foto.url }}" alt="{{ r.articulo.nombre_articulo }}">
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">{{ r.articulo.nombre_articulo }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-500">{{ r.ofertante.username }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                    {% if r.estado.nombre == 'Aceptado' %}bg-green-100 text-green-800
+                                    {% elif r.estado.nombre == 'Rechazado' %}bg-red-100 text-red-800
+                                    {% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                                    {{ r.estado.nombre }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                {% if r.estado.nombre == "Pendiente" %}
+                                    <a href="{% url 'cambiar_estado_intercambio' r.id 'Aceptado' %}"
+                                       class="text-green-600 hover:text-green-900 mr-4">Aceptar</a>
+                                    <a href="{% url 'cambiar_estado_intercambio' r.id 'Rechazado' %}"
+                                       class="text-red-600 hover:text-red-900">Rechazar</a>
+                                {% else %}
+                                    <span class="text-gray-400">-</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="bg-white p-6 rounded-lg shadow">
+                <p class="text-gray-600">No tienes solicitudes recibidas.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
