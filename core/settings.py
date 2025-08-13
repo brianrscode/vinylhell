@@ -86,7 +86,7 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1  # new
 
 ACCOUNT_EMAIL_VERIFICATION = "none"  # mandatory
-ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 
 ################################################
 ###### django-tailwind configurations ##########
