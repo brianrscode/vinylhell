@@ -48,6 +48,10 @@ THIRD_PARTY_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
+    'tailwind',
+    'theme',
+    'crispy_forms',
+    'crispy_tailwind',
 ]
 
 LOCAL_APPS = [
@@ -71,7 +75,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# django-allauth configurations
+################################################
+###### django-allauth configurations ###########
+################################################
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",  # new
@@ -80,16 +86,27 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1  # new
 
 ACCOUNT_EMAIL_VERIFICATION = "none"  # mandatory
-ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 3  # 3 intentos
-ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300  # 5 minutos
 
 # email authentication
 # ACCOUNT_AUTHENTICATION_METHOD = "email"
 # ACCOUNT_EMAIL_REQUIRED = True
 # ACCOUNT_USERNAME_REQUIRED = False
 
+################################################
+###### django-tailwind configurations ##########
+################################################
+TAILWIND_APP_NAME = 'theme'
+NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+
 LOGIN_REDIRECT_URL = '/'  # redirige a la página principal al iniciar sesión
 LOGOUT_REDIRECT_URL = '/'  # redirige a la página principal al cerrar sesión
+
+
+################################################
+###### django-crispy-forms configurations ######
+################################################
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = "tailwind"
 
 
 ROOT_URLCONF = 'core.urls'
