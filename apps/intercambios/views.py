@@ -12,21 +12,27 @@ from .models import Intercambio
 def solicitar_intercambio(request, articulo_id):
     articulo = get_object_or_404(Articulo, id=articulo_id)
 
-    if request.method == "POST":
-        form = IntercambioForm(request.POST, request=request, articulo=articulo)
+    # Evitar que el dueño del artículo se ofrezca a sí mismo
+    if articulo.propietario == request.user:
+        return redirect('detalle_articulo', articulo_id=articulo.id)
+
+    if request.method == 'POST':
+        form = IntercambioForm(request.POST)
         if form.is_valid():
             intercambio = form.save(commit=False)
-            intercambio.solicitante = request.user
+            intercambio.ofertante = request.user
+            intercambio.receptor = articulo.propietario
             intercambio.articulo = articulo
-            intercambio.estado = "Pendiente"
+            intercambio.estado = EstadoIntercambio.objects.get(nombre="Pendiente")
             intercambio.save()
-            messages.success(request, "Solicitud de intercambio enviada con éxito.")
-            return redirect('mis_solicitudes')
+            return redirect('detalle_articulo', articulo_id=articulo.id)
     else:
-        form = IntercambioForm(request=request, articulo=articulo)
+        form = IntercambioForm()
 
-    return render(request, "intercambios/solicitar_intercambio.html", {"form": form, "articulo": articulo})
-
+    return render(request, 'intercambios/solicitar_intercambio.html', {
+        'form': form,
+        'articulo': articulo
+    })
 
 @login_required
 def mis_solicitudes(request):

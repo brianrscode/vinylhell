@@ -1,0 +1,47 @@
+{% load static %}
+{% load tailwind_tags %}
+{% load tailwind_filters %}
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon icon-->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'logo.png' %}">
+
+    <!-- Tailwind -->
+    {% tailwind_css %}
+
+    <!-- AlpineJS -->
+    <script src="//unpkg.com/alpinejs" defer></script>
+
+    <!-- Extras CSS/JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@6.3.2/dist/simplebar.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+
+    {% block extra_head %}{% endblock extra_head %}
+    <title>{% block title %}{% endblock title %}</title>
+</head>
+<body class=" ">
+    <!-- CONTAINER / Full-width on mobile, constrained with padded content above -->
+
+
+                <!-- HEADER -->
+                {% include 'layouts/navbar.html' %}
+
+
+                <!-- CONTENT -->
+                {% block messages %}{% include 'messages.html' %}{% endblock messages %}
+                {% block content %}{% endblock content %}
+
+                <!-- FOOTER -->
+                {% block footer %}{% endblock footer %}
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/simplebar@6.3.2/dist/simplebar.min.js"></script>
+    {% block javascript %}{% endblock javascript %}
+</body>
+</html>
