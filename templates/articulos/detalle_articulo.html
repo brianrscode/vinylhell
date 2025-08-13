@@ -1,0 +1,22 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block content %}
+    <h1>Detalle del articulo</h1>
+    <p>{{ articulo.nombre_articulo }}</p>
+    <p>{{ articulo.descripcion }}</p>
+    <p>{{ articulo.bien_esperado }}</p>
+    <p>{{ articulo.categoria }}</p>
+    <p>{{ articulo.estado }}</p>
+    <p>{{ articulo.fecha_publicacion }}</p>
+    <img src="{{ articulo.ruta_foto.url }}" alt="{{ articulo.nombre_articulo }}" width="200">
+    {% if request.user == articulo.propietario %}
+        <a href="{% url 'editar_articulo' articulo.id %}">Editar</a>
+        <a href="{% url 'eliminar_articulo' articulo.id %}">Eliminar</a>
+    {% endif %}
+    <br>
+    {% if user.is_authenticated and articulo.propietario != user %}
+        <a href="{% url 'solicitar_intercambio' articulo.id %}">Solicitar intercambio</a>
+    {% endif %}
+
+{% endblock %}

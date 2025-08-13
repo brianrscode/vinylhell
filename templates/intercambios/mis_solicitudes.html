@@ -1,0 +1,52 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<h2>Mis Solicitudes</h2>
+
+<h3>Solicitudes Enviadas</h3>
+<table>
+    <tr>
+        <th>Artículo</th>
+        <th>Receptor</th>
+        <th>Estado</th>
+        <th>Fecha</th>
+    </tr>
+    {% for s in enviadas %}
+    <tr>
+        <td>{{ s.articulo.nombre_articulo }}</td>
+        <td>{{ s.receptor.username }}</td>
+        <td>{{ s.estado.nombre }}</td>
+        <td>{{ s.fecha }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">No has enviado solicitudes.</td></tr>
+    {% endfor %}
+</table>
+
+<h3>Solicitudes Recibidas</h3>
+<table>
+    <tr>
+        <th>Artículo</th>
+        <th>Ofertante</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+    </tr>
+    {% for r in recibidas %}
+    <tr>
+        <td>{{ r.articulo.nombre_articulo }}</td>
+        <td>{{ r.ofertante.username }}</td>
+        <td>{{ r.estado.nombre }}</td>
+        <td>
+            {% if r.estado.nombre == "Pendiente" %}
+                <a href="{% url 'cambiar_estado_intercambio' r.id 'Aceptado' %}">Aceptar</a>
+                <a href="{% url 'cambiar_estado_intercambio' r.id 'Rechazado' %}">Rechazar</a>
+            {% else %}
+                -
+            {% endif %}
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">No tienes solicitudes recibidas.</td></tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

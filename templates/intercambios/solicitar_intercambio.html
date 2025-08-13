@@ -1,0 +1,16 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<h2>Solicitar intercambio por: {{ articulo.nombre_articulo }}</h2>
+
+<h3>{{ articulo.nombre_articulo }}</h3>
+<img src="{{ articulo.ruta_foto.url }}" alt="{{ articulo.nombre_articulo }}" width="200">
+<p><strong>Descripción:</strong> {{ articulo.descripcion }}</p>
+<p><strong>Estado:</strong> {{ articulo.estado }}</p>
+<p><strong>Dueño:</strong> {{ articulo.propietario.username }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enviar solicitud</button>
+</form>
+{% endblock %}

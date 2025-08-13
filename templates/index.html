@@ -1,0 +1,15 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+  <h1>Articulos</h1>
+  <p>Lista de articulos</p>
+  {% for articulo in articulos %}
+    <a href="{% url 'detalle_articulo' articulo.id %}">
+      <img src="{{ articulo.ruta_foto.url }}" alt="{{ articulo.nombre_articulo }}" width="200">
+      <p>{{ articulo.nombre_articulo }}</p>
+    </a>
+  {% endfor %}
+{% endblock %}
