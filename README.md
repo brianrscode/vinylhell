@@ -1,6 +1,8 @@
 # VinylHell
 
-![Logo](static/imgs/logo.png)
+<div style="text-align: center;">
+   <img src="static/imgs/pentagram_logo.svg" alt="Logo" width="300" height="300">
+</div>
 
 VinylHell es una plataforma web para el intercambio de artículos entre la comunidad del metal, rock, punk, goth, etc. Permite a los usuarios publicar artículos que deseen intercambiar, buscar artículos de otros usuarios y gestionar solicitudes de intercambio.
 
@@ -78,3 +80,25 @@ VinylHell es una plataforma web para el intercambio de artículos entre la comun
 
 10. **Acceder a la aplicación**:
    Abre tu navegador y ve a `http://127.0.0.1:8000/`
+
+
+## Capturas de pantalla
+
+<table>
+   <tr>
+      <td>
+         <img src="imgs/index.png" alt="Index" width="800">
+      </td>
+      <td>
+         <img src="imgs/detalle.png" alt="Detalle" width="800">
+      </td>
+   </tr>
+   <tr>
+      <td>
+         <img src="imgs/intercambio.png" alt="Intercambio" width="800">
+      </td>
+      <td>
+         <img src="imgs/solicitudes.png" alt="Mis solicitudes" width="800">
+      </td>
+   </tr>
+</table>
