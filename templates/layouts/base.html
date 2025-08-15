@@ -21,10 +21,8 @@
 </head>
 <body>
     {% include 'layouts/navbar.html' %}
-    <div class="mt-12">
-        {% block content %}
-        {% endblock %}
-    </div>
+    {% block content %}
+    {% endblock %}
     {% include 'layouts/footer.html' %}
 
     <!-- Scripts -->
