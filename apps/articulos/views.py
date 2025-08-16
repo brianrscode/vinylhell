@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
+from django.contrib import messages
 from .models import Articulo
 from .forms import ArticuloForm
+from apps.intercambios.models import Intercambio
+from apps.estados.models import EstadoIntercambio
 
 
 def index(request):
@@ -12,7 +15,24 @@ def index(request):
 
 def detalle_articulo(request, articulo_id):
     articulo = get_object_or_404(Articulo, id=articulo_id)
-    return render(request, 'articulos/detalle_articulo.html', {'articulo': articulo})
+
+    # Verificar si el usuario ya ha solicitado un intercambio para este artículo
+    ya_solicitado = False
+    if request.user.is_authenticated:
+        # Verifica si el usuario ya ha solicitado un intercambio para este artículo
+        # a través de saber si existe un intercambio que contiene el artículo y que el usuario
+        # que lo solicitó es el usuario autenticado
+        ya_solicitado = Intercambio.objects.filter(
+            ofertante=request.user,
+            articulo=articulo
+        ).exists()
+
+    context = {
+        'articulo': articulo,
+        'ya_solicitado': ya_solicitado,
+    }
+
+    return render(request, 'articulos/detalle_articulo.html', context)
 
 
 @login_required

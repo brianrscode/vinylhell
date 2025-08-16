@@ -25,7 +25,10 @@ def solicitar_intercambio(request, articulo_id):
             intercambio.articulo = articulo
             intercambio.estado = EstadoIntercambio.objects.get(nombre="Pendiente")
             intercambio.save()
-            return redirect('detalle_articulo', articulo_id=articulo.id)
+            # return redirect('detalle_articulo', articulo_id=articulo.id)
+            # Redireccionar al inicio y mandar un mensaje de éxito
+            messages.success(request, "Solicitud de intercambio enviada con éxito.")
+            return redirect('index')
     else:
         form = IntercambioForm()
 
@@ -88,17 +91,23 @@ def cambiar_estado_intercambio(request, intercambio_id, nuevo_estado):
     return redirect('mis_solicitudes')
 
 
-# @login_required
-# def intercambios_recibidos(request):
-#     intercambios = Intercambio.objects.filter(receptor=request.user).select_related(
-#         'articulo', 'estado', 'solicitante'
-#     )
-#     return render(request, 'intercambios/intercambios_recibidos.html', {'intercambios': intercambios})
+@login_required
+def cancelar_solicitud(request):
+    if request.method == 'POST':
+        articulo_id = request.POST.get('articulo_id')
+        try:
+            # Buscar y eliminar la solicitud de intercambio
+            # Busca el Intercambio que tenga el artículo que se está solicitando
+            # relacionado con el usuario autenticado
+            # y que esté en estado pendiente
+            intercambio = Intercambio.objects.get(
+                ofertante=request.user,
+                articulo_id=articulo_id,
+                estado__nombre="Pendiente"
+            )
+            intercambio.delete()
+            messages.success(request, "Solicitud de intercambio cancelada correctamente.")
+        except Intercambio.DoesNotExist:
+            messages.error(request, "No se encontró la solicitud de intercambio o no se puede cancelar.")
 
-
-# @login_required
-# def intercambios_enviados(request):
-#     intercambios = Intercambio.objects.filter(solicitante=request.user).select_related(
-#         'articulo', 'estado', 'receptor'
-#     )
-#     return render(request, 'intercambios/intercambios_enviados.html', {'intercambios': intercambios})
+    return redirect('detalle_articulo', articulo_id=articulo_id)
